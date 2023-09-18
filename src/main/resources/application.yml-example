@@ -1,0 +1,8 @@
+spring:
+  discord:
+    token: 'token'
+    create:
+      dog:
+        active: true
+      hello:
+        active: true
