@@ -23,7 +23,7 @@ public class HelloCommandCreateHandler implements CreateHandler<HelloParams> {
 
     private String createMessage(HelloParams dto) {
         return dto.getName() != null
-                ? String.format(message, dto.getName())
+                ? String.format(message, String.join(" ", dto.getName()))
                 : String.format(message, "world");
     }
 }
