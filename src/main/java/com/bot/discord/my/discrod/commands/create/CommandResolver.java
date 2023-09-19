@@ -1,8 +1,8 @@
 package com.bot.discord.my.discrod.commands.create;
 
-public interface CommandResolver<Dto> {
+public interface CommandResolver<T> {
 
-    Dto resolve(String commandLine);
+    T resolve(String commandLine);
 
     static String removeCommandName(String commandLine, String command) {
         return commandLine.substring(1).substring(command.length());

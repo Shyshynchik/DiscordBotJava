@@ -1,10 +1,10 @@
 package com.bot.discord.my.discrod.commands.create;
 
-public interface CommandDefinition<Dto> {
+public interface CommandDefinition<T> {
 
     String getCommand();
     String getDescription();
     boolean isActive();
 
-    Class<Dto> getDtoClass();
+    Class<T> getDtoClass();
 }
