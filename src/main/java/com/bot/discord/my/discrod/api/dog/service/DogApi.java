@@ -1,4 +1,4 @@
-package com.bot.discord.my.discrod.api.dog;
+package com.bot.discord.my.discrod.api.dog.service;
 
 public interface DogApi {
 

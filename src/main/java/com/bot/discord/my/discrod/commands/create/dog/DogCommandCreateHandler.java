@@ -1,6 +1,6 @@
 package com.bot.discord.my.discrod.commands.create.dog;
 
-import com.bot.discord.my.discrod.api.dog.DogApi;
+import com.bot.discord.my.discrod.api.dog.service.DogApi;
 import com.bot.discord.my.discrod.commands.create.CreateHandler;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;

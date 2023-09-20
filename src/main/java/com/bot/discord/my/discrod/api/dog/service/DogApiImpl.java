@@ -1,5 +1,6 @@
-package com.bot.discord.my.discrod.api.dog;
+package com.bot.discord.my.discrod.api.dog.service;
 
+import com.bot.discord.my.discrod.api.dog.model.DogImage;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
