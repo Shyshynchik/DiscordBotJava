@@ -18,8 +18,6 @@ public class WeatherCommandCreateHandler implements CreateHandler<WeatherParams>
 
     private final WeatherApiService weatherApiService;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    private final static String test = "%f lon, %f lat, %s - город, %s - штат/область, %s - страна";
     private final static String test1 = "Температура\uD83C\uDF21️ %.1f °С\nОщущается как\uD83E\uDD2F %.1f °С\nВосход\uD83C\uDF05 %s\nЗакат\uD83C\uDF07 %s";
 
     @Override
@@ -30,18 +28,6 @@ public class WeatherCommandCreateHandler implements CreateHandler<WeatherParams>
                 .flatMap(Message::getChannel)
                 .flatMap(channel -> channel.createMessage(testApi1(dto)))
                 .then();
-    }
-
-    private String testApi(WeatherParams dto) {
-        var responseList = weatherApiService.getCityGeoByCityName(dto.getCity());
-
-        if (responseList == null || responseList.isEmpty()) {
-            return "Ничего не найдено";
-        }
-
-        var response = responseList.get(0);
-
-        return String.format(test, response.getLon(), response.getLat(), response.getName(), response.getState(), response.getCountry());
     }
 
     private String testApi1(WeatherParams dto) {
