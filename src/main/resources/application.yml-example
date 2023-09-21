@@ -6,3 +6,10 @@ spring:
         active: true
       hello:
         active: true
+      delete:
+        active: true
+      weather:
+        active: true
+  weather:
+    token: 'token'
+    default-weather-url: 'https://api.openweathermap.org/data/2.5/weather'

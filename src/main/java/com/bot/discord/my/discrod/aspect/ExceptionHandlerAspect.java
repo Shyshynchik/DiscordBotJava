@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 public class ExceptionHandlerAspect {
 
     @SuppressWarnings("unchecked")
-    @Around(value = "execution(* com.bot.discord.my.discrod.commands.create.Command.execute(..))")
+    @Around(value = "execution(* com.bot.discord.my.discrod.command.create.Command.execute(..))")
     public Mono<Void> aroundCommandExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         var event = (MessageCreateEvent) joinPoint.getArgs()[0];
         try {
