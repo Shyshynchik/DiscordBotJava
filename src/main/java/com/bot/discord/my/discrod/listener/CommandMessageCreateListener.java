@@ -1,7 +1,7 @@
 package com.bot.discord.my.discrod.listener;
 
-import com.bot.discord.my.discrod.commands.create.CommandResolver;
-import com.bot.discord.my.discrod.commands.create.CreateHandlerFactory;
+import com.bot.discord.my.discrod.command.create.CommandResolver;
+import com.bot.discord.my.discrod.command.create.CreateHandlerFactory;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.User;
 import lombok.RequiredArgsConstructor;
