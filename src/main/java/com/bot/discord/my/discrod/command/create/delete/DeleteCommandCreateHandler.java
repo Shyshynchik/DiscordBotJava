@@ -25,6 +25,8 @@ public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
                 .flatMapMany(channel -> getMessageBefore(channel, eventMessage.getId()))
                 .take(dto.getCount())
                 .flatMap(Message::delete)
+                .then(Mono.just(eventMessage))
+                .flatMap(message -> eventMessage.delete())
                 .then();
     }
 
