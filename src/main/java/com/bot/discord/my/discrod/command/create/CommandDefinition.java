@@ -5,6 +5,5 @@ public interface CommandDefinition<T> {
     String getCommand();
     String getDescription();
     boolean isActive();
-
     Class<T> getDtoClass();
 }
