@@ -25,4 +25,24 @@ public class DogCommandResolver implements CommandResolver<DogParams> {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public <T> T resolve1(String commandLine) {
+        if (commandLine.isBlank()) {
+            return createParams();
+        }
+        var args = splitCommandLine(commandLine);
+
+        T dogParamsCmd = createParams();
+        var parser = new CmdLineParser(dogParamsCmd);
+
+        try {
+            parser.parseArgument(args);
+
+            return dogParamsCmd;
+        } catch (CmdLineException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    protected abstract <T> T createParams();
 }
