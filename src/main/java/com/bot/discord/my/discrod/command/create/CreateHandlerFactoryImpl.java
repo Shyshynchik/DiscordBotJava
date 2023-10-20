@@ -1,28 +1,35 @@
 package com.bot.discord.my.discrod.command.create;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class CreateHandlerFactoryImpl implements CreateHandlerFactory {
-    private final List<Command> commands;
+    private final Map<String, Command> commands;
+
+    public CreateHandlerFactoryImpl(List<Command> commands) {
+        Map<String, Command> commandMap = new HashMap<>();
+
+        for (Command command : commands) {
+            commandMap.put(command.getCommand(), command);
+        }
+
+        this.commands = commandMap;
+    }
+
 
     public Optional<Command> getCreateHandler(String request) {
         var params = request.split(" ");
 
         var commandFromRequest = params[0].substring(1);
 
-        for (var command: commands) {
-            if (command.getCommand().equals(commandFromRequest) && command.isActive()) {
-                return Optional.of(command);
-            }
-        }
+        var command = commands.get(commandFromRequest);
 
-        return Optional.empty();
+        return Optional.of(command);
     }
 
 }
