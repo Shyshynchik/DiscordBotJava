@@ -3,7 +3,6 @@ package com.bot.discord.my.discrod.command.create.dog;
 import com.bot.discord.my.discrod.api.dog.service.DogApi;
 import com.bot.discord.my.discrod.command.create.CreateHandler;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -18,9 +17,12 @@ public class DogCommandCreateHandler implements CreateHandler<DogParams> {
     public Mono<Void> executeCommand(MessageCreateEvent event, DogParams dogParams) {
         var eventMessage = event.getMessage();
 
-        return Mono.just(eventMessage)
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(dogApi.getDogImage()))
+        return dogApi.getDogImage()
+                .flatMap(dogImage -> eventMessage.getChannel()
+                        .flatMap(
+                                channel -> channel.createMessage(dogImage)
+                        )
+                )
                 .then();
     }
 }

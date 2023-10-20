@@ -1,10 +1,10 @@
 package com.bot.discord.my.discrod.command.create.weather;
 
+import com.bot.discord.my.discrod.api.weather.model.Weather;
 import com.bot.discord.my.discrod.api.weather.service.WeatherService;
 import com.bot.discord.my.discrod.api.weather.util.WeatherToStringConverter;
 import com.bot.discord.my.discrod.command.create.CreateHandler;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -21,19 +21,23 @@ public class WeatherCommandCreateHandler implements CreateHandler<WeatherParams>
     public Mono<Void> executeCommand(MessageCreateEvent event, WeatherParams dto) {
         var eventMessage = event.getMessage();
 
-        return Mono.just(eventMessage)
-                .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage(getWeatherMessage(dto)))
+        return getWeatherMessageMono(dto)
+                .flatMap(weatherMessage -> eventMessage.getChannel()
+                        .flatMap(
+                                channel -> channel.createMessage(weatherMessage)
+                        )
+                )
                 .then();
     }
 
-    private String getWeatherMessage(WeatherParams dto) {
-        var weatherMono = weatherService.getWeatherByCity(dto.getCity());
-
-        var weather = weatherMono
+    private Mono<String> getWeatherMessageMono(WeatherParams dto) {
+        return Mono.just(dto)
+                .flatMap(weatherParams -> weatherService.getWeatherByCity(weatherParams.getCity()))
                 .onErrorResume((er) -> Mono.empty())
-                .block();
+                .map(this::getWeatherMessage);
+    }
 
+    private String getWeatherMessage(Weather weather) {
         if (weather == null) {
             return "Ничего не найдено";
         }

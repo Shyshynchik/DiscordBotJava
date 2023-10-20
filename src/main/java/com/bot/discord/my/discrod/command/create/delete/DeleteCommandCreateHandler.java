@@ -1,6 +1,7 @@
 package com.bot.discord.my.discrod.command.create.delete;
 
 import com.bot.discord.my.discrod.command.create.CreateHandler;
+import com.bot.discord.my.discrod.utils.AuthorizationUtil;
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
@@ -15,12 +16,13 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
+    private final AuthorizationUtil authorizationUtil;
     @Override
     public Mono<Void> executeCommand(MessageCreateEvent event, DeleteParams dto) {
         var eventMessage = event.getMessage();
 
         return Mono.just(eventMessage)
-                .filterWhen(this::isAdmin)
+                .filterWhen(authorizationUtil::isAdmin)
                 .flatMap(Message::getChannel)
                 .flatMapMany(channel -> getMessageBefore(channel, eventMessage.getId()))
                 .take(dto.getCount())
@@ -28,12 +30,6 @@ public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
                 .then(Mono.just(eventMessage))
                 .flatMap(message -> eventMessage.delete())
                 .then();
-    }
-
-    private Mono<Boolean> isAdmin(Message message) {
-        return message.getAuthorAsMember()
-                .flatMap(PartialMember::getBasePermissions)
-                .map(permissions -> permissions.contains(Permission.MANAGE_MESSAGES));
     }
 
     private Flux<Message> getMessageBefore(MessageChannel channel, Snowflake snowflake) {
