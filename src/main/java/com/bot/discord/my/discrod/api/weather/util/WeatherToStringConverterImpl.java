@@ -15,9 +15,9 @@ public class WeatherToStringConverterImpl implements WeatherToStringConverter {
 
     @Override
     public String convertWeather(Weather weather) {
-        var sunrise = Instant.ofEpochSecond(weather.getSys().getSunrise()).atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
-        var sunset = Instant.ofEpochSecond(weather.getSys().getSunset()).atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
+        var sunrise = Instant.ofEpochSecond(weather.getSystem().getSunrise()).atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
+        var sunset = Instant.ofEpochSecond(weather.getSystem().getSunset()).atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
 
-        return String.format(formatedString, weather.getMain().getTemp(), weather.getMain().getFeelsLike(), sunrise, sunset);
+        return String.format(formatedString, weather.getMain().getTemperature(), weather.getMain().getFeelsLike(), sunrise, sunset);
     }
 }

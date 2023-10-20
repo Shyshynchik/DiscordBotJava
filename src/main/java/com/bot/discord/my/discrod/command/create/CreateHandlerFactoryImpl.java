@@ -12,13 +12,11 @@ public class CreateHandlerFactoryImpl implements CreateHandlerFactory {
     private final Map<String, Command> commands;
 
     public CreateHandlerFactoryImpl(List<Command> commands) {
-        Map<String, Command> commandMap = new HashMap<>();
+        this.commands = new HashMap<>();
 
-        for (Command command : commands) {
-            commandMap.put(command.getCommand(), command);
-        }
-
-        this.commands = commandMap;
+        commands.stream()
+                .filter(Command::isActive)
+                .forEach(command -> this.commands.put(command.getCommand(), command));
     }
 
 

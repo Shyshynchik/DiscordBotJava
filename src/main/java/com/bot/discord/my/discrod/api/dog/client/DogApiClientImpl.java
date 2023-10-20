@@ -3,6 +3,7 @@ package com.bot.discord.my.discrod.api.dog.client;
 import com.bot.discord.my.discrod.api.dog.model.DogImage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,7 +11,7 @@ import java.net.URISyntaxException;
 @Component
 public class DogApiClientImpl implements DogApiClient {
     @Override
-    public DogImage getDogImage() {
+    public Mono<DogImage> getDogImage() {
         WebClient client = WebClient.create();
 
         try {
@@ -18,8 +19,7 @@ public class DogApiClientImpl implements DogApiClient {
                     .get()
                     .uri(new URI("https://dog.ceo/api/breeds/image/random"))
                     .retrieve()
-                    .bodyToMono(DogImage.class)
-                    .block();
+                    .bodyToMono(DogImage.class);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
