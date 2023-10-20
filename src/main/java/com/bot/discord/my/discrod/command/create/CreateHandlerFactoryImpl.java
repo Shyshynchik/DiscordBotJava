@@ -19,13 +19,17 @@ public class CreateHandlerFactoryImpl implements CreateHandlerFactory {
                 .forEach(command -> this.commands.put(command.getCommand(), command));
     }
 
-
+    @Override
     public Optional<Command> getCreateHandler(String request) {
         var params = request.split(" ");
 
         var commandFromRequest = params[0].substring(1);
 
         var command = commands.get(commandFromRequest);
+
+        if (command == null) {
+            return Optional.empty();
+        }
 
         return Optional.of(command);
     }
