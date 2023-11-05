@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public abstract class AbstractCommand<T> implements Command {
+public class ConcreteCommand<T> implements Command {
 
     private final CommandDefinition<T> commandDefinition;
     private final CreateHandler<T> createHandler;

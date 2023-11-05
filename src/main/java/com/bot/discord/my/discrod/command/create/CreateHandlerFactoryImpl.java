@@ -10,13 +10,14 @@ import java.util.Optional;
 @Component
 public class CreateHandlerFactoryImpl implements CreateHandlerFactory {
     private final Map<String, Command> commands;
-
     public CreateHandlerFactoryImpl(List<Command> commands) {
         this.commands = new HashMap<>();
 
         commands.stream()
                 .filter(Command::isActive)
                 .forEach(command -> this.commands.put(command.getCommand(), command));
+
+
     }
 
     @Override
