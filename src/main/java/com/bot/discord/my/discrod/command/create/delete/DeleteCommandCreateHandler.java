@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
     private final AuthorizationUtil authorizationUtil;
+
     @Override
     public Mono<Void> executeCommand(MessageCreateEvent event, DeleteParams dto) {
         var eventMessage = event.getMessage();
@@ -28,11 +29,13 @@ public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
                 .then(Mono.just(eventMessage))
                 .filterWhen(authorizationUtil::isAdmin)
                 .flatMap(message -> eventMessage.delete())
-                .switchIfEmpty(Mono.just(eventMessage)
-                        .flatMap(Message::getChannel)
-                        .flatMap(channel -> channel.createMessage("У вас недостаточно прав"))
-                        .then())
+                .then(Mono.just(eventMessage))
+                .filterWhen(authorizationUtil::isAdmin)
+                .switchIfEmpty(Mono.defer(() -> eventMessage.getChannel()
+                        .flatMap(channel -> channel.createMessage("У вас недостаточно прав"))))
                 .then();
+
+
     }
 
     private Flux<Message> getMessageBefore(MessageChannel channel, Snowflake snowflake) {
