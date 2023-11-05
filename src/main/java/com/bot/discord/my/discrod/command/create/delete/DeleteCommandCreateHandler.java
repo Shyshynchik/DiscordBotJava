@@ -5,9 +5,7 @@ import com.bot.discord.my.discrod.utils.AuthorizationUtil;
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.PartialMember;
 import discord4j.core.object.entity.channel.MessageChannel;
-import discord4j.rest.util.Permission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -28,7 +26,12 @@ public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
                 .take(dto.getCount())
                 .flatMap(Message::delete)
                 .then(Mono.just(eventMessage))
+                .filterWhen(authorizationUtil::isAdmin)
                 .flatMap(message -> eventMessage.delete())
+                .switchIfEmpty(Mono.just(eventMessage)
+                        .flatMap(Message::getChannel)
+                        .flatMap(channel -> channel.createMessage("У вас недостаточно прав"))
+                        .then())
                 .then();
     }
 
