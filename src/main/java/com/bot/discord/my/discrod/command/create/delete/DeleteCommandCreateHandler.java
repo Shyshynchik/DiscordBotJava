@@ -17,7 +17,7 @@ public class DeleteCommandCreateHandler implements CreateHandler<DeleteParams> {
     private final AuthorizationUtil authorizationUtil;
     @Override
     public Mono<Void> executeCommand(MessageCreateEvent event, DeleteParams dto) {
-        var eventMessage = event.getMessage();
+        var eventMessage = event.getMessage();123
 
         return Mono.just(eventMessage)
                 .filterWhen(authorizationUtil::isAdmin)
