@@ -1,7 +1,3 @@
-server:
-  servlet:
-    context-path: api
-
 springdoc:
   api-docs:
     path: /swagger/config
@@ -10,6 +6,8 @@ springdoc:
     disable-swagger-default-url: true
 
 spring:
+  webflux:
+    base-path: api
   discord:
     token: 'token'
     create:

@@ -9,6 +9,6 @@ public class SwaggerController {
     @GetMapping("/")
     @Operation(hidden = true)
     public String Index() {
-        return "Discord bot api <br> <a href='/swagger'>Swagger link</a>";
+        return "Discord bot api <br> <a href='/api/swagger'>Swagger link</a>";
     }
 }

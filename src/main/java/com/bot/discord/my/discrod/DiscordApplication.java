@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @OpenAPIDefinition(
 		servers = {
-				@Server(url = "/", description = "Default Server URL")
+				@Server(url = "/api", description = "Default Server URL")
 		},
 		info = @Info(title = "Discord bot api")
 )
