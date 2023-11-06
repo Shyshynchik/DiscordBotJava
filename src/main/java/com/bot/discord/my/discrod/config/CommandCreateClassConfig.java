@@ -53,6 +53,7 @@ public class CommandCreateClassConfig {
         return commandDefinitionMap.keySet().stream()
                 .filter(createHandlerMap::containsKey)
                 .filter(commandResolverMap::containsKey)
+                .filter(commandParam -> commandDefinitionMap.get(commandParam).isActive())
                 .map(paramClass -> new ConcreteCommand(commandDefinitionMap.get(paramClass), createHandlerMap.get(paramClass), commandResolverMap.get(paramClass)))
                 .collect(Collectors.toMap(ConcreteCommand::getCommand, command -> command));
     }
