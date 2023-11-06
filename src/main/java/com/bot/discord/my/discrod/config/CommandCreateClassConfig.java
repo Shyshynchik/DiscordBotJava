@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 public class CommandCreateClassConfig {
@@ -49,17 +51,35 @@ public class CommandCreateClassConfig {
         return hashMap;
     }
 
+//    @Bean
+//    @SuppressWarnings({"rawtypes", "unchecked"})
+//    public List<Command> getCommands(Map<Class<?>, CommandDefinition<?>> commandDefinitionMap,
+//                                     Map<Class<?>, CreateHandler<?>> createHandlerMap,
+//                                     Map<Class<?>, CommandResolver<?>> commandResolverMap) {
+//        return List.of(
+//                new ConcreteCommand(commandDefinitionMap.get(DeleteParams.class), createHandlerMap.get(DeleteParams.class), commandResolverMap.get(DeleteParams.class)),
+//                new ConcreteCommand(commandDefinitionMap.get(DogParams.class), createHandlerMap.get(DogParams.class), commandResolverMap.get(DogParams.class)),
+//                new ConcreteCommand(commandDefinitionMap.get(HelloParams.class), createHandlerMap.get(HelloParams.class), commandResolverMap.get(HelloParams.class)),
+//                new ConcreteCommand(commandDefinitionMap.get(HelpParams.class), createHandlerMap.get(HelpParams.class), commandResolverMap.get(HelpParams.class)),
+//                new ConcreteCommand(commandDefinitionMap.get(WeatherParams.class), createHandlerMap.get(WeatherParams.class), commandResolverMap.get(WeatherParams.class))
+//        );
+//    }
+
     @Bean
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public List<Command> getCommands(Map<Class<?>, CommandDefinition<?>> commandDefinitionMap,
-                                     Map<Class<?>, CreateHandler<?>> createHandlerMap,
-                                     Map<Class<?>, CommandResolver<?>> commandResolverMap) {
-        return List.of(
-                new ConcreteCommand(commandDefinitionMap.get(DeleteParams.class), createHandlerMap.get(DeleteParams.class), commandResolverMap.get(DeleteParams.class)),
-                new ConcreteCommand(commandDefinitionMap.get(DogParams.class), createHandlerMap.get(DogParams.class), commandResolverMap.get(DogParams.class)),
-                new ConcreteCommand(commandDefinitionMap.get(HelloParams.class), createHandlerMap.get(HelloParams.class), commandResolverMap.get(HelloParams.class)),
-                new ConcreteCommand(commandDefinitionMap.get(HelpParams.class), createHandlerMap.get(HelpParams.class), commandResolverMap.get(HelpParams.class)),
-                new ConcreteCommand(commandDefinitionMap.get(WeatherParams.class), createHandlerMap.get(WeatherParams.class), commandResolverMap.get(WeatherParams.class))
-        );
+    public Map<String, Command> getCommandsMap(Map<Class<?>, CommandDefinition<?>> commandDefinitionMap,
+                                               Map<Class<?>, CreateHandler<?>> createHandlerMap,
+                                               Map<Class<?>, CommandResolver<?>> commandResolverMap) {
+
+
+        return Stream.of(
+                        new ConcreteCommand(commandDefinitionMap.get(DeleteParams.class), createHandlerMap.get(DeleteParams.class), commandResolverMap.get(DeleteParams.class)),
+                        new ConcreteCommand(commandDefinitionMap.get(DogParams.class), createHandlerMap.get(DogParams.class), commandResolverMap.get(DogParams.class)),
+                        new ConcreteCommand(commandDefinitionMap.get(HelloParams.class), createHandlerMap.get(HelloParams.class), commandResolverMap.get(HelloParams.class)),
+                        new ConcreteCommand(commandDefinitionMap.get(HelpParams.class), createHandlerMap.get(HelpParams.class), commandResolverMap.get(HelpParams.class)),
+                        new ConcreteCommand(commandDefinitionMap.get(WeatherParams.class), createHandlerMap.get(WeatherParams.class), commandResolverMap.get(WeatherParams.class))
+                )
+                .collect(Collectors.toMap(ConcreteCommand::getCommand, command -> command));
+
     }
 }
