@@ -15,14 +15,16 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/messages")
 public class MessageController {
     private final MessageService messageService;
+
     @PostMapping("/send/{channelId}")
-    public Mono<ResponseEntity<Void>> sendMessage(
+    public Mono<ResponseEntity<Object>> sendMessage(
             @Parameter(description = "Id of text channel") @PathVariable Long channelId,
             @Parameter(description = "Message") @RequestBody MessageDto messageDto
-            ) {
+    ) {
         return messageService
                 .sendMassage(channelId, messageDto)
-                .thenReturn(ResponseEntity.noContent().build());
+                .thenReturn(ResponseEntity.noContent().build())
+                .onErrorResume(e -> Mono.just(ResponseEntity.badRequest().body(e.getMessage())));
     }
 
 }

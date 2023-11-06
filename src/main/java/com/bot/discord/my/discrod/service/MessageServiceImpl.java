@@ -13,10 +13,19 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
     private final GatewayDiscordClient discordClient;
+    private final ChannelService channelService;
     @Override
     public Mono<Message> sendMassage(Long channelId, MessageDto messageDto) {
-        return discordClient.getChannelById(Snowflake.of(channelId))
-                .ofType(TextChannel.class)
-                .flatMap(channel -> channel.createMessage(messageDto.getMessage()));
+        return channelService.isChannelExists(channelId)
+                .flatMap(channelExists -> {
+                    if (channelExists) {
+                        return discordClient
+                                .getChannelById(Snowflake.of(channelId))
+                                .ofType(TextChannel.class)
+                                .flatMap(channel -> channel.createMessage(messageDto.getMessage()));
+                    } else {
+                        return Mono.error(new RuntimeException("Channel with id " + channelId + " not found"));
+                    }
+                });
     }
 }
