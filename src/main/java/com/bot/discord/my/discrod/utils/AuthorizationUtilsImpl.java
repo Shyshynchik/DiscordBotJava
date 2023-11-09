@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class AuthorizationUtilImpl implements AuthorizationUtil {
+public class AuthorizationUtilsImpl implements AuthorizationUtils {
     @Override
     public Mono<Boolean> isAdmin(Message message) {
         return message.getAuthorAsMember()
